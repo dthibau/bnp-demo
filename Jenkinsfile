@@ -8,17 +8,19 @@ pipeline {
     stages {
         stage('Compile et tests') {
             agent {
-                docker {
-                    image 'maven:3.8.3-openjdk-17'
-                    args '-v $HOME/.m2:/root/.m2'
+                kubernetes {
+                    inheritFrom 'maven3-jdk17-agent'
                 }
             }
             steps {
-                echo 'Unit test et packaging'
-                sh 'mvn -Dmaven.test.failure.ignore=true clean package'
-                dir('application/target') {
-                    stash includes: '*.jar', name: 'app'
+                container('maven3-openjdk-17') {
+                   echo 'Unit test et packaging'
+                    sh 'mvn -Dmaven.test.failure.ignore=true clean package'
+                    dir('application/target') {
+                        stash includes: '*.jar', name: 'app'
+                    }
                 }
+                
             }
             post {
                 always {
