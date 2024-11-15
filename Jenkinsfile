@@ -4,11 +4,6 @@ def integrationUrl
 
 pipeline {
    agent none 
-    tools {
-        jdk 'JDK17'
-        maven 'MAVEN3'
-    }
-
 
     stages {
         stage('Compile et tests') {
@@ -40,6 +35,10 @@ pipeline {
             parallel {
                 stage('Vulnérabilités') {
                     agent any
+                    tools {
+                        jdk 'JDK17'
+                        maven 'MAVEN3'
+                    }
                     steps {
                         echo 'Tests de Vulnérabilités OWASP'
                         sh 'mvn -DskipTests verify'
@@ -48,6 +47,10 @@ pipeline {
                 }
                  stage('Analyse Sonar') {
                     agent any
+                    tools {
+                        jdk 'JDK17'
+                        maven 'MAVEN3'
+                    }
                     environment {
                         SONAR_TOKEN = credentials('SONAR_TOKEN')
                     }
