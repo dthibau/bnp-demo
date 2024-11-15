@@ -1,4 +1,3 @@
-@Library('UTIL') _
 def dataCenters
 def integrationUrl
 
