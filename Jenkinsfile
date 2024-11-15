@@ -1,3 +1,4 @@
+@Library('UTIL') _
 def dataCenters
 def integrationUrl
 
@@ -71,7 +72,19 @@ pipeline {
                 }
             }
         }
+        stage ('Release') {
+            agent any
 
+            steps {
+                createTarGz(
+                    sourceDir: 'library/src/main/java',
+                    extensions: ['java'],
+                    outputDir: '.',
+                    outputFile: 'lib-src-dist'
+                )
+                sh "cp lib-src-dist.tar.gz /home/dthibau/Formations/Jenkins/MyWork"
+            }
+        }
         stage('Validation déploiement') {
 /*            when {
                 branch 'main'
