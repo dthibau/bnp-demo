@@ -113,6 +113,9 @@ pipeline {
                 beforeAgent true
             } */
             agent none
+            options {
+                timeout(time: 10, unit: 'MINUTES') // Timeout de 10 minutes
+            }
             steps {
                 input message: "Voulez vous déployer vers $dataCenters", ok: 'Déployer'
                 echo "Déploiement intégration validé"
